@@ -9,14 +9,9 @@
     </div>
     <div>
         <h1 class="text-2xl my-2">{{ post.title }}</h1>
-        <p class="text-sm opacity-50 my-2">Просмотров: {{ post.views }}</p>
+        <div class="markdown" v-html="body"></div>
         <p>{{ post.body }}</p>
-        <ul class="flex gap-2">
-            <li v-for="tag in post.tags" :key="tag"
-            class="text-[brown] cursor-pointer">
-                <NuxtLink to="">{{ tag }}</NuxtLink>
-            </li>
-        </ul>
+        
     </div>
 </template>
 
@@ -26,14 +21,22 @@ const { id } = useRoute().params;
 const post = ref({})
 const index = useIndexStore();
 
+import markdownit from 'markdown-it'
+const md = markdownit()
+const body = ref()
+watch(post, (newPost) => {
+    body.value = md.render(newPost.body);
+})
+
 const fetch = async () => {
     try {
         // включаем loader
         index.loader = true;
 
-        const res = await $fetch(`https://dummyjson.com/post/${id}`)
+        const res = await $fetch(`http://localhost:1337/api/posts/${id}?populate=*`)
+        
 
-        return post.value = res
+        return post.value = res.data
     } catch (error) {
         console.log(error);
     } finally {
