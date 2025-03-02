@@ -3,7 +3,9 @@
 </template>
 
 <script setup>
+const index = useIndexStore();
+
 useHead({
-  title: 'Главная | Академия ТОП',
+  title: 'Главная | Секреты Шефа',
 })
 </script>

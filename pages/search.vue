@@ -1,6 +1,9 @@
 <template>
-    <h1 class="my-4 text-2xl text-blue-700 darl:blue-500 font-medium">Блог</h1>
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <h1 class="my-4 text-2xl text-blue-700 darl:blue-500 font-medium">
+        Поиск <q>{{ index.search }}</q>
+    </h1>
+    <!-- все посты по запросу -->
+    <div v-if="posts.length > 0" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <article v-for="post in posts" :key="post.id" class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <NuxtLink :to="`/${post.category?.slug}/${post.slug}`">
                 <img class="rounded-t-lg max-h-44 w-full object-cover" :src="'http://localhost:1337'+post.cover.url" :alt="post.cover.alternativeText" :title="post.cover.caption" />
@@ -20,41 +23,28 @@
             </div>
         </article>
     </div>
+    <div v-else class="text-xl ">
+        Совпадений не найденно...
+    </div>
 </template>
 
 <script setup>
-const posts = ref([])
 const index = useIndexStore();
+const posts = ref([])
 
-const fetch = async () => {
+const fetch = async (search) => {
     try {
-        // включаем loader
-        index.loader = true;
-
-        const res = await $fetch('http://localhost:1337/api/posts?populate=*')
+        const res = await $fetch(`http://localhost:1337/api/posts?filters[$or][0][title][$containsi]=${search}&filters[$or][1][body][$containsi]=${search}&populate=*`)
 
         return posts.value = res.data
     } catch (error) {
         console.log(error);
-    } finally {
-        // выключаем loader
-        index.loader = false;
     }
 }
 
+watch( () => index.search, (search) =>{
+    fetch(search)
+});
+
 onMounted(() => fetch())
-
-useHead({
-  title: 'Блог | Секреты Шефа',
-  bodyAttrs: {
-    class: 'bg-white dark:bg-gray-900'
-  },
-})
-
-useSeoMeta({
-  title: 'Блог | Секреты Шефа',
-  ogTitle: 'Блог | Секреты Шефа',
-  description: 'Предлагаем простые и вкусные рецепты, советы по выбору ингредиентов и идеи для сервировки',
-  ogDescription: 'Предлагаем простые и вкусные рецепты, советы по выбору ингредиентов и идеи для сервировки',
-})
 </script>
