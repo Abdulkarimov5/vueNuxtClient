@@ -9,17 +9,19 @@
 const loader = useIndexStore();
 
 useHead({
-  title: 'Секреты Шефа',
   bodyAttrs: {
     class: 'bg-white dark:bg-gray-900'
   },
 })
 
-useSeoMeta({
-  title: 'Секреты Шефа',
-  ogTitle: 'Секреты Шефа',
-  description: 'Предлагаем простые и вкусные рецепты, советы по выбору ингредиентов и идеи для сервировки',
-  ogDescription: 'Предлагаем простые и вкусные рецепты, советы по выбору ингредиентов и идеи для сервировки',
-  ogImage: '~/public/prew.jpg',
-})
+// if (import.meta.server) {
+//   // These meta tags will only be added during server-side rendering
+//   useSeoMeta({
+//     title: 'fefe',
+//     robots: 'index, follow',
+//     description: 'Static description that does not need reactivity',
+//     ogImage: 'https://example.com/image.png',
+//     // other static meta tags...
+//   })
+// }
 </script>
