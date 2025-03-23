@@ -1,14 +1,16 @@
 <template>
   <!-- первый блок -->
-  <section v-if="block1" class="flex flex-col lg:flex-row items-center gap-24">
+  <section v-if="block1" class="flex flex-col lg:flex-row items-center gap-12 md:gap-24">
+    
     <!-- левая сторона -->
     <div class="flex flex-col gap-4 text-black dark:text-white">
-      <h1 class="text-5xl font-medium uppercase">Самый <span class="text-blue-700 text-6xl font-bold ">космические</span> рецепты от Шефа</h1>
-      <p class="text-2xl">Вдохновляйтесь кулинарными шедеврами от профессионального шеф-повара и создавайте настоящие кулинарные произведения искусства на своей кухне!</p>
+      <h1 class="text-4xl md:text-5xl font-medium uppercase">Самый <span class="text-blue-700 text-5xl md:text-6xl font-bold ">космические</span> практики для разработчиков</h1>
+      <p class="text-lg md:text-2xl">Вдохновляйтесь передовыми техниками и решениями от профессионалов индустрии, чтобы создавать код, который впечатляет и работает как часы!</p>
     </div>
+
     <!-- правая сторона -->
     <div class="grid grid-cols-2 grid-rows-2 items-center gap-8">
-      <article v-for="(post, index) in posts" :key="post.id" :class="index === 0 ? 'row-span-2 *:*:h-80 *:*:w-3xs' : ''"
+      <article v-for="(post, index) in posts" :key="post.id" :class="index === 0 ? 'row-span-2 *:*:h-60 md:*:*:h-80 *:*:w-3xs' : ''"
         class="hover:scale-105 transition-transform">
         <NuxtLink :to="`/${post.category?.slug}/${post.slug}`">
           <img class="object-cover rounded-3xl" :src="'https://908bd2082661.vps.myjino.ru'+post.cover.url" :alt="post.cover.alternativeText">
@@ -70,14 +72,14 @@ const fetchSeo = async () => {
     const res = await $fetch(`https://908bd2082661.vps.myjino.ru/api/global?populate=*`);
 
     if (res.data.seo) {
-        seo.value = res.data.seo;
+       seo.value = res.data.seo;
     }
 
     block1.value = res.data.block1
     block2.value = res.data.block2
 
     useHead({
-        title: `${seo.value.metaTitle} | Секреты Шефа`,
+        title: `${seo.value.metaTitle} | PlusPixel`,
         meta: [
             { name: 'description', content: seo.value.metaDescription }
         ],

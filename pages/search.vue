@@ -46,32 +46,32 @@ watch( () => index.search, (search) =>{
     fetch(search)
 
     useHead({
-        title: `${search} | Секреты Шефа`,
+        title: `${search} | PlusPixel`,
     })
 });
 
 // получаем мета данные
 const seo = ref({})
 const fetchSeo = async () => {
-    try {
-        index.loader = true;
-        const res = await $fetch(`https://908bd2082661.vps.myjino.ru/api/seatrch?populate=*`);
+  try {
+    index.loader = true;
+    const res = await $fetch(`https://908bd2082661.vps.myjino.ru/api/seatrch?populate=*`);
 
-        if (res.data.seo) {
-        seo.value = res.data.seo;
-        }
-
-        useHead({
-            meta: [
-                { name: 'description', content: seo.value.metaDescription }
-            ],
-        })
-    
-    } catch (error) {
-        console.log(error);
-    } finally {
-        index.loader = false;
+    if (res.data.seo) {
+       seo.value = res.data.seo;
     }
+
+    useHead({
+        meta: [
+            { name: 'description', content: seo.value.metaDescription }
+        ],
+    })
+    
+  } catch (error) {
+    console.log(error);
+  } finally {
+    index.loader = false;
+  }
 };
 
 onMounted(() => {

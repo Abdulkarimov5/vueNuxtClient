@@ -1,13 +1,13 @@
 <template>
     <h1 class="my-4 text-2xl text-blue-700 darl:blue-500 font-medium">Блог</h1>
-    <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <article v-for="post in posts" :key="post.id" class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
             <NuxtLink :to="`/${post.category?.slug}/${post.slug}`">
                 <img class="rounded-t-lg max-h-44 w-full object-cover" :src="'https://908bd2082661.vps.myjino.ru'+post.cover.url" :alt="post.cover.alternativeText" :title="post.cover.caption" />
             </NuxtLink>
             <div class="inline-flex flex-col gap-3.5 p-5">
                 <NuxtLink :to="`/${post.category?.slug}/${post.slug}`">
-                    <h5 class="min-h-24 text-2xl font-bold tracking-tight text-gray-900
+                    <h5 class="min-h-20 md:min-h-24 text-lg md:text-2xl font-bold tracking-tight text-gray-900
                         line-clamp-3 overflow-hidden text-ellipsis whitespace-normal
                         dark:text-white">{{ post.title }}</h5>
                 </NuxtLink>
@@ -46,25 +46,25 @@ const fetch = async () => {
 // получаем мета данные
 const seo = ref({});
 const fetchSeo = async () => {
-    try {
-        index.loader = true;
-        const res = await $fetch(`https://908bd2082661.vps.myjino.ru/api/blog?populate=*`);
-        if (res.data.seo) {
-        seo.value = res.data.seo;
-        }
-    } catch (error) {
-        console.log(error);
-    } finally {
-        index.loader = false;
+  try {
+    index.loader = true;
+    const res = await $fetch(`https://908bd2082661.vps.myjino.ru/api/blog?populate=*`);
+    if (res.data.seo) {
+      seo.value = res.data.seo;
     }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    index.loader = false;
+  }
 };
 
 useSeoMeta({
-    title: () => seo.value.metaTitle,
-    description: () => seo.value.metaDescription,
-    ogTitle: () => seo.value.metaTitle,
-    ogDescription: () => seo.value.metaDescription,
-    ogImage: () => seo.value
+  title: () => seo.value.metaTitle,
+  description: () => seo.value.metaDescription,
+  ogTitle: () => seo.value.metaTitle,
+  ogDescription: () => seo.value.metaDescription,
+  ogImage: () => seo.value
 })
 
 // watch( () => {
